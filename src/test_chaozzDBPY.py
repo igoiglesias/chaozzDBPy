@@ -53,9 +53,11 @@ def test_should_return_false_to_delete_and_update_query_action():
 
 def test_should_insert_item():
     db = ChaozzDBPy()
-    assert db.query(
+    insert_1 = db.query(
         "INSERT INTO user (nome, senha, email) VALUES ('igor','1234','igor@igor.com')"
     )
-    assert db.query(
+    assert not insert_1
+    insert_2 = db.query(
         "INSERT INTO user (nome, senha, email) VALUES ('joão','4321','joao@fernando.com')"
     )
+    assert not insert_2
