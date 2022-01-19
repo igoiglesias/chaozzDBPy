@@ -4,6 +4,7 @@
   ],
   "files.exclude": {
     "**/.pytest_cache": true,
-    "**/.pytest_cache.*": true
+    "**/.pytest_cache.*": true,
+    "src/__pycache__": true
   }
 }
