@@ -1,6 +1,6 @@
 import hashlib
 from pathlib import Path
-from typing import Any, List, Union
+from typing import List
 
 
 class ChaozzDBPy:
@@ -12,7 +12,7 @@ class ChaozzDBPy:
         salt: str = "@Chaozz#DB!PYthon",
         max_records: int = 999,
         last_error: str = "",
-    ) -> None:
+    ):
         self.__delimiter = delimiter
         self.__location = location
         self.__extension = extension
@@ -25,7 +25,8 @@ class ChaozzDBPy:
             "sha1", unhashed_password.encode(), self.__salt.encode(), 100000
         ).hex()
 
-    def error(self, query_action: str, error: str) -> Any:
+    # TODO: recheck
+    def error(self, query_action: str, error: str) -> bool or 0 or list:
         self.__last_error = error
         actions_allowed = ["SELECT", "INSERT", "DELETE", "UPDATE"]
 
@@ -41,7 +42,7 @@ class ChaozzDBPy:
         else:
             return False
 
-    def query(self, query: str) -> None:
+    def query(self, query: str):
 
         self.__last_error = ""
 
@@ -116,7 +117,7 @@ class ChaozzDBPy:
 
         return data
 
-    def write_to_file(self, table_path: str, data: str, action: str) -> None:
+    def write_to_file(self, table_path: str, data: str, action: str):
         parameter: str = self.get_parameter(action)
 
         with open(table_path, parameter) as table:
@@ -125,7 +126,7 @@ class ChaozzDBPy:
     def get_new_id(self, table_path: str) -> str:
         last_line: list = self.read_from_file(table_path, line=-1)
         # TODO: Find a better way to do this too
-        id: Any = last_line[0].split("\t")[0]
+        id: str = last_line[0].split("\t")[0]
 
         try:
             id = int(id)
@@ -157,13 +158,13 @@ class ChaozzDBPy:
         self,
         table_path: str,
         data: tuple,
-    ) -> None:
+    ):
         path: object = Path(table_path)
         if not path.exists():
             header: str = self.format_data(data, write_header=True)
             self.write_to_file(table_path, header, "INSERT")
 
-    def read_from_file(self, table_path: str, line: int = 0) -> List[Any]:
+    def read_from_file(self, table_path: str, line: int = 0) -> List[str]:
         parameter: str = "r"
         file: list = []
         lines_from_file: list = []

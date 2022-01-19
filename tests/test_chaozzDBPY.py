@@ -1,7 +1,6 @@
-from chaozzDBPy import ChaozzDBPy
+from src.chaozzDBPy import ChaozzDBPy
 
-
-## should hash password
+# should hash password
 def test_should_generate_password_with_salt():
     db = ChaozzDBPy(salt="dfsfds!@sdD2")
     password = db.password("eu")
@@ -19,7 +18,7 @@ def test_should_return_false_to_not_allowed_query_action():
     query_action = "TEST"
     error = ""
     result = db.error(query_action, error)
-    assert result is False
+    assert result == False
 
 
 def test_should_return_empty_array_to_select_query_action():
@@ -35,7 +34,7 @@ def test_should_return_zero_to_insert_query_action():
     query_action = "INSERT"
     error = ""
     result = db.error(query_action, error)
-    assert result is 0
+    assert result == 0
 
 
 def test_should_return_false_to_delete_and_update_query_action():
@@ -43,12 +42,12 @@ def test_should_return_false_to_delete_and_update_query_action():
     query_action = "DELETE"
     error = ""
     result = db.error(query_action, error)
-    assert result is False
+    assert result == False
 
     query_action = "UPDATE"
     error = ""
     result = db.error(query_action, error)
-    assert result is False
+    assert result == False
 
 
 def test_should_insert_item():
