@@ -20,10 +20,55 @@ class ChaozzDBPy:
         self.__max_records = max_records
         self.__last_error = last_error
 
+    def run(self, query):
+        if query['action'] == 'select':
+            return self.select(query)
+
+        if query['action'] == 'insert':
+            return self.insert(query)
+
+        if query['action'] == 'update':
+            return self.update(query)
+
+        if query['action'] == 'delete':
+            return self.delete(query)
+
     def password(self, unhashed_password: str) -> str:
         return hashlib.pbkdf2_hmac(
             "sha1", unhashed_password.encode(), self.__salt.encode(), 100000
         ).hex()
+
+    # Statements
+    def select(self, query: list):
+        pass
+
+    def delete(self, query: list):
+        table = query[1]
+        conditions = "".join(query[3:]).split("=")
+        db_filename = self.__location + table + self.__extension
+        db_file = open(db_filename, "r")
+
+    def insert(self, query):
+        table: str = query['table_name']
+        table_path: str = self.__location + table + self.__extension
+
+        try:
+            for line in query['data']:
+                row = ''
+
+                for item in line:
+                    row += item + '\t'
+
+                id: str = self.get_new_id(table_path)
+                line: str = id + row + '\n'
+                self.write_to_file(table_path, line, "INSERT")
+
+                return 0
+        except:
+            return self.error("INSERT", "Could not insert data")
+
+    def update(self, query: list):
+        pass
 
     # TODO: recheck
     def error(self, query_action: str, error: str) -> bool or 0 or list:
@@ -65,41 +110,9 @@ class ChaozzDBPy:
         elif query_action == "DELETE":
             self.query_delete(query)
         elif query_action == "INSERT":
-            self.query_insert(query)
+            self.insert(query)
         else:
             self.query_update(query)
-
-    def query_select(self, query: list):
-        pass
-
-    def query_delete(self, query: list):
-        table = query[1]
-        conditions = "".join(query[3:]).split("=")
-        db_filename = self.__location + table + self.__extension
-        db_file = open(db_filename, "r")
-
-    def query_insert(self, query: list):
-        table: str = query.pop(1)
-        data_to_insert: tuple = self.process_query_before_insert(query)
-        table_path: str = self.__location + table + self.__extension
-
-        self.create_table_if_not_exist(table_path, data_to_insert)
-
-        line: str = self.format_data(data_to_insert)
-        id: str = self.get_new_id(table_path)
-        line: str = id + line
-        self.write_to_file(table_path, line, "INSERT")
-
-    def query_update(self, query: list):
-        pass
-
-    def replace_char_from_list(
-        self, replace_in: str, to_replace: list, replace_for: str = ""
-    ) -> str:
-        for item in to_replace:
-            replace_in = replace_in.replace(item, replace_for)
-
-        return replace_in
 
     def process_query_before_insert(self, query: list) -> tuple:
         query.pop(query.index("INTO"))
@@ -107,15 +120,23 @@ class ChaozzDBPy:
         query_atributes: list = remain_query.split("VALUES")
         char_to_strip: list = ["(", ")"]
 
-        columns: str = self.replace_char_from_list(query_atributes[0], char_to_strip)
+        columns: str = self.replace_char_from_list(
+            query_atributes[0], char_to_strip)
         columns_splited: list = columns.split(",")
-        values: str = self.replace_char_from_list(query_atributes[1], char_to_strip)
+        values: str = self.replace_char_from_list(
+            query_atributes[1], char_to_strip)
         values_splited: list = values.split(",")
 
         # TODO: Find a better way to do this
         data: tuple = tuple(zip(columns_splited, values_splited))
 
         return data
+
+    def replace_char_from_list(self, replace_in: str, to_replace: list, replace_for: str = "") -> str:
+        for item in to_replace:
+            replace_in = replace_in.replace(item, replace_for)
+
+        return replace_in
 
     def write_to_file(self, table_path: str, data: str, action: str):
         parameter: str = self.get_parameter(action)
@@ -154,11 +175,7 @@ class ChaozzDBPy:
         else:
             return "r"
 
-    def create_table_if_not_exist(
-        self,
-        table_path: str,
-        data: tuple,
-    ):
+    def create_table_if_not_exist(self, table_path: str, data: tuple):
         path: object = Path(table_path)
         if not path.exists():
             header: str = self.format_data(data, write_header=True)

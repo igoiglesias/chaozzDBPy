@@ -19,7 +19,8 @@ def sql_parser(sql):
                 item_splited = item.split(',')
 
                 for i in item_splited:
-                    el.append(i.replace('"', '') + '\t')
+                    # el.append(i.replace('"', '') + '\t')
+                    el.append(i.replace('"', ''))
 
                 data.append(el)
 
@@ -96,19 +97,3 @@ def sql_parser(sql):
         # FIX: tem forma melhor de pegar o id
         mid_lang['where'] = {'id': query_splited[id + 3]}
         return mid_lang
-
-
-# INSERT
-parsed_query = sql_parser('INSERT into users (nome, idade, sexo) values ("fulano", "21", "M"), ("ciclana", "22", "F")')
-
-# SELECT
-# parsed_query = sql_parser('SELECT * FROM users')
-# parsed_query = sql_parser('SELECT (id, name) FROM users WHERE id = 1')
-
-# UPDATE
-# parsed_query = sql_parser('UPDATE users SET name = "fulano" WHERE id = 1')
-
-# DELETE
-# parsed_query = sql_parser('DELETE FROM users WHERE id = 1')
-
-print(parsed_query)
