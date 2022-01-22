@@ -1,5 +1,6 @@
 from src.chaozzDBPy import ChaozzDBPy
 
+
 # should hash password
 def test_should_generate_password_with_salt():
     db = ChaozzDBPy(salt="dfsfds!@sdD2")
@@ -52,11 +53,13 @@ def test_should_return_false_to_delete_and_update_query_action():
 
 def test_should_insert_item():
     db = ChaozzDBPy()
-    insert_1 = db.query(
+
+    insert_1 = db.run(
         "INSERT INTO user (nome, senha, email) VALUES ('igor','1234','igor@igor.com')"
     )
     assert not insert_1
-    insert_2 = db.query(
+
+    insert_2 = db.run(
         "INSERT INTO user (nome, senha, email) VALUES ('joão','4321','joao@fernando.com')"
     )
     assert not insert_2

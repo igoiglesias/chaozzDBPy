@@ -1,5 +1,5 @@
-from sql_parser import sql_parser
-from chaozzDBPy import ChaozzDBPy
+# from sql_parser import sql_parser
+# from chaozzDBPy import ChaozzDBPy
 
 
 # INSERT
@@ -16,9 +16,9 @@ sql = 'INSERT into users (nome, idade, sexo) values ("fulano", "21", "M"), ("cic
 # DELETE
 # sql = 'DELETE FROM users WHERE id = 1'
 
-parsed_sql = sql_parser(sql)
+# parsed_sql = sql_parser(sql)
 
-query = ChaozzDBPy()
-res = query.run(parsed_sql)
+# query = ChaozzDBPy()
+# res = query.run(parsed_sql)
 
 print(res)
