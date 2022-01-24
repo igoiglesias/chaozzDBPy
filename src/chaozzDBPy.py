@@ -1,6 +1,6 @@
 import hashlib
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, List
 
 from src.utils import SqlParser
 
@@ -82,7 +82,7 @@ class ChaozzDBPy:
         self.__last_error = error
         actions_allowed = ["SELECT", "INSERT", "DELETE", "UPDATE"]
 
-        if not query_action in actions_allowed:
+        if query_action not in actions_allowed:
             return False
 
         if query_action == "SELECT":
@@ -94,29 +94,6 @@ class ChaozzDBPy:
         else:
             return False
 
-    # def process_query_before_insert(self, query: list) -> tuple:
-    #     query.pop(query.index("INTO"))
-    #     remain_query: str = "".join(query)
-    #     query_atributes: list = remain_query.split("VALUES")
-    #     char_to_strip: list = ["(", ")"]
-
-    #     columns: str = self.replace_char_from_list(query_atributes[0], char_to_strip)
-    #     columns_splited: list = columns.split(",")
-    #     values: str = self.replace_char_from_list(query_atributes[1], char_to_strip)
-    #     values_splited: list = values.split(",")
-
-    #     # TODO: Find a better way to do this
-    #     data: tuple = tuple(zip(columns_splited, values_splited))
-
-    #     return data
-
-    # def replace_char_from_list(
-    #     self, replace_in: str, to_replace: list, replace_for: str = ""
-    # ) -> str:
-    #     for item in to_replace:
-    #         replace_in = replace_in.replace(item, replace_for)
-
-    #     return replace_in
     def get_new_id(self, table_path: str) -> str:
         last_line: list = self.read_from_file(table_path, line=-1)
         # TODO: Find a better way to do this too
