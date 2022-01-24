@@ -1,1 +1,1 @@
-python3 -m pytest -v tests/test_chaozzDBPY.py
+python3 -m pytest 
