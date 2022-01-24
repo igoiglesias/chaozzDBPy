@@ -2,7 +2,7 @@
 
 ## About
 
-   ![image](https://user-images.githubusercontent.com/2658126/94922899-60754800-0491-11eb-8763-573a408fd630.png)
+   ![image](https://user-images.githubusercontent.com/2658126/94922899-60754800-0491-11eb-8763-573a408fd630.png) [![Testing](https://github.com/igoiglesias/chaozzDBPy/actions/workflows/python-app-testing.yml/badge.svg?branch=master)](https://github.com/igoiglesias/chaozzDBPy/actions/workflows/python-app-testing.yml)
     
    ChaozzDBPy is a python implementation based on the original <a target="_blank" href="https://github.com/chaozznl/chaozzDB">ChaozzDB</a> from <a target="_blank" href="https://github.com/chaozznl">Chaozznl</a> with some new features.
 
