@@ -57,17 +57,16 @@ class ChaozzDBPy:
         table: str = query["table_name"]
         table_path: str = self.__location + table + self.__extension
 
+        self.create_table_if_not_exist(table_path, query["columns"])
+
         try:
-            for line in query["data"]:
+            for item in query["data"]:
 
-                row = self.format_data(line)
+                row = self.format_data(item)
                 id: str = self.get_new_id(table_path)
-                line: str = id + row + "\n"
+                line: str = id + row
 
-                self.create_table_if_not_exist(table_path, query["columns"])
                 self.write_to_file(table_path, line, "INSERT")
-
-                return 0
         except:
             return self.error("INSERT", "Could not insert data")
 
